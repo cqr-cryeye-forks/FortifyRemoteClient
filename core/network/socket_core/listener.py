@@ -16,14 +16,16 @@ def socket_listener():
     connect()
     sleep(3)
     if Connection.connected is True:
-        # [CLEAN_OLD_DATA] - [BEGIN]
-        send_to_server(command=ServerCommands.CLEAN_OLD_RESULTS.value)
-        data = receive_data()
-        print_result_message(data)
 
-        send_to_server(command=ServerCommands.CLEAN_OLD_TARGETS.value)
-        data = receive_data()
-        print_result_message(data)
+        # Don't manage storage from client - you can destroy other scans
+        # [CLEAN_OLD_DATA] - [BEGIN]
+        # send_to_server(command=ServerCommands.CLEAN_OLD_RESULTS.value)
+        # data = receive_data()
+        # print_result_message(data)
+
+        # send_to_server(command=ServerCommands.CLEAN_OLD_TARGETS.value)
+        # data = receive_data()
+        # print_result_message(data)
         # [CLEAN_OLD_DATA] - [END]
 
         # [SEND-FILE] - [BEGIN]
