@@ -8,7 +8,7 @@ https://github.com/zeinlol/FortifyServerAdapter
 
 ### RUN
 
-```angular2html
+```
 Fortify Remote Client
 
 optional arguments:
@@ -16,5 +16,5 @@ optional arguments:
   -o OUTPUT, --output OUTPUT
                         output file
   -t TARGET, --target TARGET
-                        Path for analyzing. Default C:\Users\nicko\Documents
+                        Path for analyzing.
 ```

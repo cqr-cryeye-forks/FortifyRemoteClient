@@ -1,10 +1,11 @@
 import json
 from pathlib import Path
+from typing import Union
 
 from dict2xml import dict2xml
 
 
-def save_result(result: bytes, output_path: Path):
+def save_result(result: Union[bytes, str], output_path: Path):
     if output_path.suffix in ['.xml', 'fvdl', '.json']:
         result = json.loads(result)
         with open(output_path, 'w') as file:

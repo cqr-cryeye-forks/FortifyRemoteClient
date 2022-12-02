@@ -1,13 +1,13 @@
+import json
 import os
 import shutil
 from time import sleep
 
 from core.data.classes import ServerCommands, CommandStatus
-from core.network.socket_core import send_to_server, receive_data
-from .connection import connect, Connection
-from ... import print_result_message, cli_arguments
-from ...data.config import BASE_PATH
-from ...files.output import save_result
+from core.network.socket_core import send_to_server, receive_data, connect, Connection
+from core import cli_arguments, print_result_message
+from core.data.config import BASE_PATH
+from core.files.output import save_result
 
 BYTEORDER_LENGTH = 8
 
@@ -76,4 +76,7 @@ def socket_listener():
             shutil.rmtree(target_archive, ignore_errors=True)
             print(f'Temp data removed: {target_archive}')
     else:
+        error = {'type': 'Connection error', 'message': 'No connection with server'}
+        results = json.dumps({'errors': [error]})
+        save_result(result=results, output_path=cli_arguments.output)
         print('No connection')
