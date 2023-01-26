@@ -4,10 +4,11 @@ import shutil
 from time import sleep
 
 from core.data.classes import ServerCommands, CommandStatus
-from core.network.socket_core import send_to_server, receive_data, connect, Connection
+from core.network.socket_core import send_to_server, connect, Connection
 from core import cli_arguments, print_result_message
 from core.data.config import BASE_PATH
 from core.files.output import save_result
+from core.network.socket_core.results_getter import wait_and_receive_data
 
 BYTEORDER_LENGTH = 8
 
@@ -16,17 +17,6 @@ def socket_listener():
     connect()
     sleep(3)
     if Connection.connected is True:
-
-        # Don't manage storage from client - you can destroy other scans
-        # [CLEAN_OLD_DATA] - [BEGIN]
-        # send_to_server(command=ServerCommands.CLEAN_OLD_RESULTS.value)
-        # data = receive_data()
-        # print_result_message(data)
-
-        # send_to_server(command=ServerCommands.CLEAN_OLD_TARGETS.value)
-        # data = receive_data()
-        # print_result_message(data)
-        # [CLEAN_OLD_DATA] - [END]
 
         # [SEND-FILE] - [BEGIN]
         send_to_server(command=ServerCommands.GET_FILE.value)
@@ -55,7 +45,7 @@ def socket_listener():
         # [SEND-FILE] - [END]
 
         send_to_server(command=ServerCommands.RUN_SCAN.value, message='clean_results')
-        data = receive_data()
+        data = wait_and_receive_data()
         print_result_message(data)
         file_size = int(data.get('length', 1024))
         if data.get('status') != CommandStatus.ERROR.value:

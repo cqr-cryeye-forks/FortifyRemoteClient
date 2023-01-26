@@ -25,7 +25,7 @@ def connect():
 def reconnect_socket():
     Connection.sock.close()
 
-    print(f'Connecting to {cli_arguments.host}:{cli_arguments.port}...')
+    print(f'Connecting to {cli_arguments.host}:{cli_arguments.port} ...')
     Connection.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     Connection.sock.connect((cli_arguments.host, cli_arguments.port))
     Connection.connected = True

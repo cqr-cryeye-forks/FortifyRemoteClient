@@ -17,6 +17,8 @@ def save_result(result: Union[bytes, str], output_path: Path):
             file.close()
     else:
         with open(output_path, 'wb') as file:
+            if type(result) != bytes:
+                result = bytes(result.encode())
             file.write(result)
             file.close()
     print(f'Data saved to {output_path.absolute()}')
