@@ -53,10 +53,12 @@ def socket_listener():
             print("Receiving results...")
             packet = b""
             while len(packet) < file_size:
-                if (file_size - len(packet)) > 1024:  # if remaining bytes are more than the defined chunk size
+                remaining_size = file_size - len(packet)
+                print(f"Already received: {len(packet)}. Left: {remaining_size}")
+                if remaining_size > 1024:  # if remaining bytes are more than the defined chunk size
                     buffer = Connection.sock.recv(1024)
                 else:
-                    buffer = Connection.sock.recv(file_size - len(packet))  # read remaining number of bytes
+                    buffer = Connection.sock.recv(remaining_size)  # read remaining number of bytes
                 if not buffer:
                     raise Exception("Incomplete file received")
                 packet += buffer
