@@ -17,11 +17,10 @@ def socket_listener():
     connect()
     sleep(3)
     if Connection.connected is True:
-
         # [SEND-FILE] - [BEGIN]
         send_to_server(command=ServerCommands.GET_FILE.value)
         temp_data = False
-        if cli_arguments.target.suffix == '.zip':
+        if cli_arguments.target is not None and cli_arguments.target.suffix == '.zip':
             target_archive = cli_arguments.target
         else:
             shutil.make_archive(BASE_PATH.joinpath('target'), 'zip', cli_arguments.target)
@@ -39,7 +38,11 @@ def socket_listener():
         # with open(target_archive, 'rb') as file:
         #     Connection.sock.sendfile(file)
         with open(target_archive, 'rb') as f1:
-            Connection.sock.send(f1.read())
+            while True:
+                data = f1.read(1024)  # Read the file in chunks to avoid memory issues
+                if not data:
+                    break
+                Connection.sock.sendall(data)  # Use sendall to ensure all bytes are sent
         msg = Connection.sock.recv(1024).decode('utf8')
         print(f"SERVER: {msg}")
         # [SEND-FILE] - [END]
